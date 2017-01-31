@@ -225,6 +225,15 @@ public class AddressBook {
      * signature anyway.
      * ====================================================================
      */
+    
+    private static void loopProgram() {
+    	while (true) {
+            String userCommand = getUserInput();
+            echoUserCommand(userCommand);
+            String feedback = executeCommand(userCommand);
+            showResultToUser(feedback);
+        }
+    }
 
     private static void showWelcomeMessage() {
         showToUser(DIVIDER, DIVIDER, VERSION, MESSAGE_WELCOME, DIVIDER);
