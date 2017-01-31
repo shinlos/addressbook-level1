@@ -662,12 +662,17 @@ public class AddressBook {
         for (int i = 0; i < persons.size(); i++) {
             final String[] person = persons.get(i);
             final int displayIndex = i + DISPLAYED_INDEX_OFFSET;
-            messageAccumulator.append('\t')
-                              .append(getIndexedPersonListElementMessage(displayIndex, person))
-                              .append(LS);
+            formatString(messageAccumulator, person, displayIndex);
         }
         return messageAccumulator.toString();
     }
+
+	private static void formatString(final StringBuilder messageAccumulator, final String[] person,
+			final int displayIndex) {
+		messageAccumulator.append('\t')
+		                  .append(getIndexedPersonListElementMessage(displayIndex, person))
+		                  .append(LS);
+	}
 
     /**
      * Constructs a prettified listing element message to represent a person and their data.
