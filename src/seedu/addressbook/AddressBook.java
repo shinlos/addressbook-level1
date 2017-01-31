@@ -137,6 +137,11 @@ public class AddressBook {
     private static final String COMMAND_SORT_WORD = "sort";
     private static final String COMMAND_SORT_DESC = "Displays all persons in alphabetical order.";
     private static final String COMMAND_SORT_EXAMPLE = COMMAND_SORT_WORD;
+    
+    private static final String COMMAND_EDIT_WORD = "edit";
+    private static final String COMMAND_EDIT_DESC = "Edits the data for a selected entry by its index number used in "
+                                                    + "the last find/list call.";
+    private static final String COMMAND_EDIT_EXAMPLE = COMMAND_EDIT_WORD;
 
     private static final String DIVIDER = "===================================================";
 
