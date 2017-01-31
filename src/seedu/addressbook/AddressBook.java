@@ -607,6 +607,10 @@ public class AddressBook {
         }
         return inputLine;
     }
+    
+    public static boolean inputIsWhitespace(String userInput) {
+    	return userInput.trim().isEmpty();
+    }
 
    /*
     * NOTE : =============================================================
