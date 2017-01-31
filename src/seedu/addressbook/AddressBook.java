@@ -210,7 +210,12 @@ public class AddressBook {
         showWelcomeMessage();
         processProgramArgs(args);
         loadDataFromStorage();
-        loopProgram();
+        while (true) {
+            String userCommand = getUserInput();
+            echoUserCommand(userCommand);
+            String feedback = executeCommand(userCommand);
+            showResultToUser(feedback);
+        }
     }
 
     /*
@@ -220,15 +225,6 @@ public class AddressBook {
      * signature anyway.
      * ====================================================================
      */
-    
-    private static void loopProgram() {
-    	while (true) {
-            String userCommand = getUserInput();
-            echoUserCommand(userCommand);
-            String feedback = executeCommand(userCommand);
-            showResultToUser(feedback);
-        }
-    }
 
     private static void showWelcomeMessage() {
         showToUser(DIVIDER, DIVIDER, VERSION, MESSAGE_WELCOME, DIVIDER);
@@ -423,8 +419,8 @@ public class AddressBook {
         // try decoding a person from the raw args
         final Optional<String[]> decodeResult = decodePersonFromString(commandArgs);
 
-        // checks if args are valid
-        if (!hasValidArgs(decodeResult)) {
+        // checks if args are valid (decode result will not be present if the person is invalid)
+        if (!decodeResult.isPresent()) {
             return getMessageForInvalidCommandInput(COMMAND_ADD_WORD, getUsageInfoForAddCommand());
         }
 
@@ -432,15 +428,6 @@ public class AddressBook {
         final String[] personToAdd = decodeResult.get();
         addPersonToAddressBook(personToAdd);
         return getMessageForSuccessfulAddPerson(personToAdd);
-    }
-    
-    private static boolean hasValidArgs(Optional<String[]> decodeResult) {
-        // checks if args are valid (decode result will not be present if the person is invalid)
-        if (!decodeResult.isPresent()) {
-            return false;
-        } else {
-        	return true;
-        }
     }
 
     /**
@@ -615,19 +602,11 @@ public class AddressBook {
         System.out.print(LINE_PREFIX + "Enter command: ");
         String inputLine = SCANNER.nextLine();
         // silently consume all blank and comment lines
-        while (inputIsWhitespace(inputLine) || inputIsComment(inputLine)) {
+        while (inputLine.trim().isEmpty() || inputLine.trim().charAt(0) == INPUT_COMMENT_MARKER) {
             inputLine = SCANNER.nextLine();
         }
         return inputLine;
-    }
-    
-    public static boolean inputIsWhitespace(String userInput) {
-    	return userInput.trim().isEmpty();
-    }
-    
-    public static boolean inputIsComment(String userInput) {
-    	return userInput.trim().charAt(0) == INPUT_COMMENT_MARKER;
-    }
+    }z
 
    /*
     * NOTE : =============================================================
