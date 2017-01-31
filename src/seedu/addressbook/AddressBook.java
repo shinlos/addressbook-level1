@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.Set;
@@ -483,13 +484,23 @@ public class AddressBook {
      * @return list of persons in full model with name containing some of the keywords
      */
     private static ArrayList<String[]> getPersonsWithNameContainingAnyKeyword(Collection<String> keywords) {
-        final ArrayList<String[]> matchedPersons = new ArrayList<>();
-        for (String[] person : getAllPersonsInAddressBook()) {
-            final Set<String> wordsInName = new HashSet<>(splitByWhitespace(getNameFromPerson(person)));
-            if (!Collections.disjoint(wordsInName, keywords)) {
-                matchedPersons.add(person);
-            }
-        }
+    	final ArrayList<String[]> matchedPersons = new ArrayList<>();
+		for (String[] person : getAllPersonsInAddressBook()) {
+			String personName = getNameFromPerson(person);
+			personName = personName.toLowerCase();
+			
+			//cast keywords to lower case
+			ArrayList<String> tempKeywords = new ArrayList<String>();
+			Iterator<String> itr = keywords.iterator();
+			while (itr.hasNext()) {
+				String word = itr.next();
+				tempKeywords.add(word.toLowerCase());
+			}
+			final Set<String> wordsInName = new HashSet<>(splitByWhitespace(personName));
+			if (!Collections.disjoint(wordsInName, tempKeywords)) {
+				matchedPersons.add(person);
+			}
+		}
         return matchedPersons;
     }
 
@@ -606,7 +617,7 @@ public class AddressBook {
             inputLine = SCANNER.nextLine();
         }
         return inputLine;
-    }z
+    }
 
    /*
     * NOTE : =============================================================
