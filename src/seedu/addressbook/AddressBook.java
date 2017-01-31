@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Optional;
@@ -391,6 +392,8 @@ public class AddressBook {
             return executeClearAddressBook();
         case COMMAND_HELP_WORD:
             return getUsageInfoForAllCommands();
+        case COMMAND_SORT_WORD:
+        	return executeListAllPersonsAlphabeticallyInAddressBook();
         case COMMAND_EXIT_WORD:
             executeExitProgramRequest();
         default:
@@ -596,6 +599,52 @@ public class AddressBook {
     private static String executeListAllPersonsInAddressBook() {
         ArrayList<String[]> toBeDisplayed = getAllPersonsInAddressBook();
         showToUser(toBeDisplayed);
+        return getMessageForPersonsDisplayedSummary(toBeDisplayed);
+    }
+
+    /**
+     * Returns a sorted list of the persons in the array by ascending lexicographical order
+     *
+     * @return feedback display message for the operation result
+     */
+    private static ArrayList<String[]> sortPersonList(ArrayList<String[]> list) {
+    	ArrayList<String[]> tempList = new ArrayList<String[]>(list);
+    	ArrayList<String[]> sortedList = new ArrayList<String[]>();
+    	int index = 0;
+    	String smallestName = getNameFromPerson(list.get(0));
+    	int smallestIndex = 0;
+
+    	while (tempList.size() != 0) { //has elements in list
+    		if (tempList.size() == 1) {
+    			sortedList.add(tempList.get(0));
+    			break;
+    		}
+    		if (getNameFromPerson(tempList.get(index)).compareTo(smallestName) < 0) {
+				smallestName = getNameFromPerson(tempList.get(index));
+				smallestIndex = index;
+			}
+    		if (index == tempList.size() - 1) { //at last element
+    			sortedList.add(tempList.get(smallestIndex)); //add lexicographically smallest element to list
+    			tempList.remove(smallestIndex);
+    			smallestName = getNameFromPerson(tempList.get(0)); //reset references
+    			smallestIndex = 0;
+    			index = 0;
+    			continue;
+    		}
+    		index++;
+    	}
+    	
+    	return sortedList;
+    }
+    
+    /**
+     * Displays all persons in the address book to the user; in alphabetical order.
+     *
+     * @return feedback display message for the operation result
+     */
+    private static String executeListAllPersonsAlphabeticallyInAddressBook() {
+        ArrayList<String[]> toBeDisplayed = getAllPersonsInAddressBook();
+        showToUser(sortPersonList(toBeDisplayed));
         return getMessageForPersonsDisplayedSummary(toBeDisplayed);
     }
 
@@ -1108,6 +1157,8 @@ public class AddressBook {
                 + getUsageInfoForDeleteCommand() + LS
                 + getUsageInfoForClearCommand() + LS
                 + getUsageInfoForExitCommand() + LS
+                + getUsageInfoForSortCommand() + LS
+                + getUsageInfoForEditCommand() + LS
                 + getUsageInfoForHelpCommand();
     }
 
@@ -1194,4 +1245,10 @@ public class AddressBook {
         return new ArrayList<>(Arrays.asList(toSplit.trim().split("\\s+")));
     }
 
+}
+
+class CompareNames implements Comparator<String> {
+    public int compare(String first, String second) {
+        return first.compareTo(second);
+    }
 }
