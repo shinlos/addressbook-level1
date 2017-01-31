@@ -434,9 +434,7 @@ public class AddressBook {
         return getMessageForSuccessfulAddPerson(personToAdd);
     }
     
-    private static boolean hasValidArgs(String commandArgs) {
-    	final Optional<String[]> decodeResult = decodePersonFromString(commandArgs);
-
+    private static boolean hasValidArgs(Optional<String[]> decodeResult) {
         // checks if args are valid (decode result will not be present if the person is invalid)
         if (!decodeResult.isPresent()) {
             return false;
