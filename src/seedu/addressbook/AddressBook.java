@@ -440,10 +440,14 @@ public class AddressBook {
         }
 
         // add the person as specified
-        final String[] personToAdd = decodeResult.get();
+        return addPersonToAddressBook(decodeResult);
+    }
+
+	private static String addPersonToAddressBook(final Optional<String[]> decodeResult) {
+		final String[] personToAdd = decodeResult.get();
         addPersonToAddressBook(personToAdd);
         return getMessageForSuccessfulAddPerson(personToAdd);
-    }
+	}
 
     /**
      * Constructs a feedback message for a successful add person command execution.
