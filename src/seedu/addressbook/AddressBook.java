@@ -611,6 +611,10 @@ public class AddressBook {
     public static boolean inputIsWhitespace(String userInput) {
     	return userInput.trim().isEmpty();
     }
+    
+    public static boolean inputIsComment(String userInput) {
+    	return userInput.trim().charAt(0) == INPUT_COMMENT_MARKER;
+    }
 
    /*
     * NOTE : =============================================================
